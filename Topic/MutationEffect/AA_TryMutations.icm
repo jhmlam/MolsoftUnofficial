@@ -1,0 +1,14 @@
+
+
+
+# Select all mutation target
+I_out=Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( no ) // Integer( yes ) 
+S_aa={"gly" "ala" "val" "leu" "ile" "pro" "cys" "met" "ser" "thr" "phe" "tyr" "trp" "asn" "gln" "asp" "glu" "his" "lys" "arg" "all"} 
+S_out=S_aa[Index(I_out 1 all)] 
+
+
+
+
+
+mutantProteinLigandBG a_7ljdDA.r/202 Sum(S_out ",") a_7ljdDA.DA yes
+mutantProteinLigandBG a_7ljdNE.r/202 Sum(S_out ",") a_7ljdNE.NE yes

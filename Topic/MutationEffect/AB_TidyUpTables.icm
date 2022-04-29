@@ -1,0 +1,24 @@
+add column mutations_7ljdDA Tointeger(Replace(Tostring(mutations_7ljdDA.residue),"\D", "",regexp)) index=3 name="Resindex"
+add column mutations_7ljdNE Tointeger(Replace(Tostring(mutations_7ljdNE.residue),"\D", "",regexp)) index=3 name="Resindex"
+
+
+
+# ====================
+# Remove self-self
+# ====================
+add column mutations_7ljdDA Iarray(Nof(mutations_7ljdDA )) index=3 name="SameSame"
+add column mutations_7ljdNE Iarray(Nof(mutations_7ljdNE )) index=3 name="SameSame"
+numrow  = Nof(mutations_7ljdDA.residue)
+for i = 1 , numrow 
+		if (mutations_7ljdDA.wt[i] == mutations_7ljdDA.mut[i]) then
+        mutations_7ljdDA.SameSame[i] = 1
+    endif
+endfor
+delete mutations_7ljdDA.SameSame == 1
+
+for i=1,Nof(mutations_7ljdNE)
+		if (mutations_7ljdNE.wt[i] == mutations_7ljdNE.mut[i]) then
+        mutations_7ljdNE.SameSame[i] = 1
+    endif
+endfor
+delete mutations_7ljdNE.SameSame == 1

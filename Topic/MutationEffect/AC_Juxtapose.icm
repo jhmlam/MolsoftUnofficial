@@ -1,0 +1,24 @@
+
+
+# ========================
+# Get Juxtapose
+# ========================
+# Find Entries in 7ljdNE
+add column mutations_7ljdDA Rarray(Nof(mutations_7ljdDA), 0.) index=7 name="NEddGbind"
+for i = 1,Nof(mutations_7ljdDA)
+		for j = 1, Nof(mutations_7ljdNE)
+
+				if (mutations_7ljdDA.Resindex[i] != mutations_7ljdNE.Resindex[j])  then
+           continue
+				endif
+        if (mutations_7ljdDA.mut[i] != mutations_7ljdNE.mut[j]) then
+            continue
+        endif
+				print mutations_7ljdDA.Resindex[i], mutations_7ljdNE.Resindex[j], mutations_7ljdDA.mut[i] , mutations_7ljdNE.mut[j]
+        mutations_7ljdDA.NEddGbind[i] = mutations_7ljdNE.ddGbind[j]
+
+		endfor
+endfor
+
+
+add column mutations_7ljdDA function="ddGbind-NEddGbind" index=8 name="DAddDiffNEdd" delete comment="Subtraction"  
