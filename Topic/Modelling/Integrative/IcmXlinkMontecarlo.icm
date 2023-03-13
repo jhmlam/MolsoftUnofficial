@@ -1,0 +1,411 @@
+
+# ======================================
+# Create restraints
+# ======================================
+set randomize 11111
+ManualStrength = 1
+ReleaseArrestin = 1        # Obsolete
+CrosslinkThreshold = 0.075
+mcShake = 3.0
+mnvisits = 100;mnconf = mnvisits;mncallsMC = 500000
+visitsAction = "heat";highEnergyAction = "stackjump";temperature = 600;tempCycle = {610.,600.,2.,0.}
+l_debug = no
+l_confirm = no
+nProc = 8
+fileepochcu = "111"
+objectnamecu = "6u1b"
+replicanamecu = "0"
+s_tempDir = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/Temporary/"
+#visitsAction = "random";highEnergyAction = "random";temperature = 600;tempCycle = {3000.,600.,2.,0.}
+
+
+# =====================================
+# Define the parts of PTH1R and Arrestin
+# =====================================
+
+# There are parts I will not set them move because of the very nice H bond network in the initial structure. They are in quotation. Those will not be moved at all.
+# Move - delete tz for those
+# Unfix - unfix  variables for those
+# Note. You cannot use a different name than vs_min and vs_mc for storing variables.
+
+#s_Pth1r_ECD="0:179"
+#s_Pth1r_TM1="180:211"
+#s_Pth1r_ICL1="212:218"
+#s_Pth1r_TM2="219:247"
+#s_Pth1r_ECL1="248:273"
+#s_Pth1r_TM3="274:311"
+#s_Pth1r_ICL2="312:317"
+#s_Pth1r_TM4="318:345"
+#s_Pth1r_ECL3="346:359"
+
+s_Pth1r_Nterm="0:355"                # Unmove. Fix.     # ECD
+
+s_Pth1r_ECL3_inspected="356:359"     # Move. Unfix. # Hinge.
+s_Pth1r_TM5="360:389"                # Move. Fix.   # Helix.
+s_Pth1r_ICL3="390:401"               # Move. unfix. # Hinge.
+
+
+s_Pth1r_TM6a="401:417"               # Move. Fix.   # Helix.
+s_Pth1r_TM6b="418:419"               # Move. Unfix. # Hinge.
+
+s_Pth1r_TM6c7a="420:449"             # Unmove. Fix. # 
+
+
+#'
+#s_Pth1r_TM6c="420:424"               # No move. Tight H bond with ECL4 and TM7a
+#s_Pth1r_ECL4="425:434"               # No move.
+#s_Pth1r_TM7a="435:449"               # No move.
+#'
+
+
+
+
+s_Pth1r_TM7b="450:450"               # Move. Fix.   # Hinge.
+s_Pth1r_TM7c="451:461"               # Move. Fix.   # Helix.
+
+
+s_Pth1r_ICL4="462:463"               # Move. Unfix. # Hinge.
+s_Pth1r_TM8="464:480"                # Move. Fix.   # Helix.
+
+
+s_Pth1r_P1="481:501"                 # Move. Unfix. # tail P1
+s_Pth1r_P2="502:508"                 # Move. Unfix. # tail P2
+s_Pth1r_P3="509:565"                 # Move. Unfix. # tail P3
+
+# TODO PTH1R 7TM tub region
+s_Pth1r_7TMBottom="214,219:220,223,302,305:306,309,393,398,401,404,405,408,416,459,463,465,467,471:472,476,491:496" 
+
+s_Arrestin_Nterm="0:6"               # Move. Unfix
+s_Arrestin_s1="7:12"                 # Move. Fix
+s_Arrestin_s2="19:21"                # Move. Unfix sidechain
+s_Arrestin_s1s2="13:18"              # Move. Unfix
+s_Arrestin_s2s3s4="19:42"            # Move. Fix.
+s_Arrestin_s4s5="43:62"              # Move. UnFix.
+s_Arrestin_s5s6="63:75"              # Move. Unfix
+s_Arrestin_s6="76:88"                # Move. Fix
+s_Arrestin_s6h1="89:97"              # Move. UnFix
+s_Arrestin_h1="98:106"               # Move. Fix
+s_Arrestin_h1s7="107:111"            # Move. Unfix
+s_Arrestin_s7="112:117"              # Move. Fix
+s_Arrestin_s7s8="118:123"            # Move. UnFix
+s_Arrestin_s8="124:130"              # Move. Fix
+s_Arrestin_s8s9="131:139"            # Move. UnFix
+s_Arrestin_s9="140:150"              # Move. Fix
+s_Arrestin_s9s10="151:164"           # Move. Unfix
+s_Arrestin_s10="165:173"             # Move. Fix
+s_Arrestin_s10s11="174:182"          # Move. Unfix
+s_Arrestin_s11s12="183:203"          # Move. Fix
+s_Arrestin_s12s13="204:206"          # Move. UnFix
+s_Arrestin_s13="207:208"             # Move. Fix
+s_Arrestin_s13s14="209:213"          # Move. UnFix
+s_Arrestin_s14s15="214:242"          # Move. Fix
+s_Arrestin_s15s16="243:245"          # Move. Unfix
+s_Arrestin_s16s17="246:274"          # Move. Fix
+s_Arrestin_s17s18a="275:299"         # Move. Fix
+s_Arrestin_s17s18b="300:310"         # Move. Unfix
+s_Arrestin_s17s18c="311:315"         # Move. Unfix
+s_Arrestin_s18s19="316:351"          # Move. Fix
+s_Arrestin_Cterm="352:380"           # Move. Unfix
+
+
+
+
+NoTzDecision = (a_PTH1R/$s_Pth1r_ECL3_inspected,$s_Pth1r_TM5,$s_Pth1r_ICL3,$s_Pth1r_TM6a,$s_Pth1r_TM6b,$s_Pth1r_ICL4,$s_Pth1r_TM8,$s_Pth1r_P1,$s_Pth1r_P2,$s_Pth1r_P3) | (a_ARRESTIN) | (a_PTH1R/$s_Pth1r_7TMBottom & !a_//ca,c,n,o,hn)
+
+
+# Montecarlo: All reasonable variables
+vs_mc=((V_//S & V_/S_ & !V_//omg & !V_//omgp) & ((V_PTH1R/$s_Pth1r_ECL3_inspected | V_PTH1R/$s_Pth1r_ICL3 | V_PTH1R/$s_Pth1r_TM6b | V_PTH1R/$s_Pth1r_ICL4 ) | (V_ARRESTIN/$s_Arrestin_Nterm | V_ARRESTIN/$s_Arrestin_s5s6 | V_ARRESTIN/$s_Arrestin_s6h1 |  V_ARRESTIN/$s_Arrestin_h1s7 | V_ARRESTIN/$s_Arrestin_s8s9 | V_ARRESTIN/$s_Arrestin_s9s10 | V_ARRESTIN/$s_Arrestin_s17s18c )))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi* | V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_s10/xi* | V_ARRESTIN/$s_Arrestin_s9s10/xi*)) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P1 | V_PTH1R/$s_Pth1r_P2 | V_PTH1R/$s_Pth1r_P3))
+
+# Montecarlo: The tail of PTH1R
+vs_pth1rp1=((V_//S & V_/S_ & !V_//omg & !V_//omgp) & ( V_ARRESTIN/$s_Arrestin_s9s10  ))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi*| V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_s10/xi* | V_ARRESTIN/$s_Arrestin_s9s10/xi*)) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P1 | V_PTH1R/$s_Pth1r_P2))
+
+
+vs_pth1rp3=((V_//S & V_/S_ & !V_//omg & !V_//omgp) & (V_ARRESTIN/$s_Arrestin_Nterm | V_ARRESTIN/$s_Arrestin_s6h1 |  V_ARRESTIN/$s_Arrestin_h1s7 | V_ARRESTIN/$s_Arrestin_s9s10  ))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi*| V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_h1/xi* ))  | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P3 | V_PTH1R/$s_Pth1r_P2))
+
+
+
+
+# Montecarlo: loops of arrestin inside the 7TM
+vs_arrestinloop=((V_//S & V_/S_ & !V_//omg & !V_//omgp) &                                  (( V_ARRESTIN/$s_Arrestin_s5s6 | V_ARRESTIN/$s_Arrestin_s17s18c  | V_ARRESTIN/$s_Arrestin_s8s9  )))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & V_PTH1R/$s_Pth1r_7TMBottom/xi*)
+
+# Minimization: allows all the unfix above 
+
+vs_min = ((V_//S & V_/S_ & !V_//omg & !V_//omgp) & ((V_PTH1R/$s_Pth1r_ECL3_inspected | V_PTH1R/$s_Pth1r_ICL3 | V_PTH1R/$s_Pth1r_TM6b | V_PTH1R/$s_Pth1r_ICL4 ) |    (V_ARRESTIN/$s_Arrestin_Nterm | V_ARRESTIN/$s_Arrestin_s4s5 | V_ARRESTIN/$s_Arrestin_s5s6 | V_ARRESTIN/$s_Arrestin_s6h1 |  V_ARRESTIN/$s_Arrestin_h1s7 |V_ARRESTIN/$s_Arrestin_s7s8 | V_ARRESTIN/$s_Arrestin_s8s9 | V_ARRESTIN/$s_Arrestin_s9s10 | V_ARRESTIN/$s_Arrestin_s17s18b | V_ARRESTIN/$s_Arrestin_s17s18c )))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi* | V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_s10/xi* | V_ARRESTIN/$s_Arrestin_s9s10/xi* | V_ARRESTIN/$s_Arrestin_h1/xi* | V_ARRESTIN/$s_Arrestin_s15s16/xi*)) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P1 | V_PTH1R/$s_Pth1r_P2 | V_PTH1R/$s_Pth1r_P3))
+
+
+# ========================================
+# Distance Restraints
+# ========================================
+# Initialise with tethers
+delete drestraint
+delete tz
+delete rs
+delete vrestraint
+copy a_.  "TEMP_TETHER"
+
+set tz a_OPTSUBJECT.//!h* a_TEMP_TETHER.//!h*
+delete tz NoTzDecision
+
+
+
+
+
+set terms only "vw,14,hb,el,to,cn,ss,tz,rs"
+vwMethod =2
+vwWeight =1.
+tzWeight =1.1
+elWeight =1.
+
+
+# Restraints - Backbone Misc
+set drestraint type Nof(t_DistanceColumnWithExpt)+1 30.0 1.7 2.3 # Hbonds w/ H
+set drestraint type Nof(t_DistanceColumnWithExpt)+2 5.0 2.7 3.3  # Hbonds w/o H
+set drestraint type Nof(t_DistanceColumnWithExpt)+3 5.0 4.0 6.0 
+
+set drestraint type Nof(t_DistanceColumnWithExpt)+4 10.0 1.7 2.6 # Arrestin  Hbonds w/ H
+set drestraint type Nof(t_DistanceColumnWithExpt)+5 20.0 1.7 2.9 # Arrestin  Hbonds w/ H
+set drestraint type Nof(t_DistanceColumnWithExpt)+6 10.0 1.7 3.4 # Arrestin  Hbonds w/ H
+
+
+set drestraint type Nof(t_DistanceColumnWithExpt)+7 5.0 3.1 3.3  # Trans peptide
+set drestraint type Nof(t_DistanceColumnWithExpt)+8 300.0 1.7 2.3 # Hbonds w/ H
+
+
+# Restraints - From Table
+for i=1, Nof(t_DistanceColumnWithExpt)
+    errorAction="none"
+    # PTH1R
+    if t_DistanceColumnWithExpt.PTH1R_resid[i][1] =="G" then
+        a1= a_PTH1R/^$t_DistanceColumnWithExpt.PTH1R_resid[i]/ha1
+    else
+        a1= a_PTH1R/^$t_DistanceColumnWithExpt.PTH1R_resid[i]/cb
+    endif
+
+    if (t_DistanceColumnWithExpt.PTH1R_resid[i] > 505) continue
+
+
+    # Arrestin 
+    if t_DistanceColumnWithExpt.ARRESTIN_resid[i][1] =="G" then
+       a2= a_ARRESTIN/^$t_DistanceColumnWithExpt.ARRESTIN_resid[i]/ha1
+     else
+       a2= a_ARRESTIN/^$t_DistanceColumnWithExpt.ARRESTIN_resid[i]/cb
+       if (Error) then
+          print i
+          s_skipMessages = "[2139]"
+       endif
+    endif
+
+    # Distance Restraint
+    if t_DistanceColumnWithExpt.Experiment[i] > CrosslinkThreshold then
+     if ManualStrength == 0 then
+        set drestraint type i 10.0*t_DistanceColumnWithExpt.Experiment[i] 4.0 10.0
+        set drestraint i a1 a2
+     else
+        #set drestraint type i Real(t_DistanceColumnWithExpt.StrengthReal[i]) 4.0 10.0
+        set drestraint type i Sqrt(t_DistanceColumnWithExpt.Experiment[i])*10.0 4.0 10.0
+        set drestraint i a1 a2
+     endif
+    endif
+
+    # Pad Eerror
+    if (Error) then
+       printf "These alternative %s %s positions will kill me\n" , String(t_DistanceColumnWithExpt.ARRESTIN_resid[i]), String(t_DistanceColumnWithExpt.PTH1R_resid[i])
+       s_skipMessages = "[2644]"   # suppress the warning
+    endif
+
+    printf "PTH1R %s ARRESTIN %s %s added\n" , String(t_DistanceColumnWithExpt.PTH1R_resid[i]),String(t_DistanceColumnWithExpt.ARRESTIN_resid[i]), String(t_DistanceColumnWithExpt.Experiment[i])
+
+endfor
+
+errorAction="break"
+
+# ============================
+# Protection, Further Restraints and Tethers
+# ============================
+
+# Protect general secondary
+
+delete CLASHES
+calc_short_distance_table (a_//hn&a_PTH1R/SEH)|(a_//o&a_PTH1R/SEH) 2.6
+for i=1, Nof(CLASHES)
+     set drestraint Nof(t_DistanceColumnWithExpt)+1  $CLASHES.atom1[i] $CLASHES.atom2[i]
+endfor
+
+delete CLASHES
+calc_short_distance_table (a_//hn&(a_ARRESTIN/SEH))|(a_//o&(a_ARRESTIN/SEH)) 2.6
+for i=1, Nof(CLASHES)
+     set drestraint Nof(t_DistanceColumnWithExpt)+1  $CLASHES.atom1[i] $CLASHES.atom2[i]
+endfor
+
+delete CLASHES
+calc_short_distance_table (a_//hn&(a_ARRESTIN/SEH))|(a_//o&(a_ARRESTIN/SEH)) 3.1
+for i=1, Nof(CLASHES)
+     set drestraint Nof(t_DistanceColumnWithExpt)+5  $CLASHES.atom1[i] $CLASHES.atom2[i]
+endfor
+
+
+
+
+
+
+
+show energy "tz"
+display tz
+
+
+
+# Arr Pth1r beta strands
+# Arr Pth1r beta strands
+
+set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/10/hn a_PTH1R/504/o
+set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/10/o a_PTH1R/504/hn
+set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/12/o a_PTH1R/502/hn
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/10/hz2 a_PTH1R/504/o2p
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/11/hh11 a_PTH1R/503/o2p
+
+
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/8/hn a_PTH1R/504/o
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/8/o a_PTH1R/504/hn
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/10/hn a_PTH1R/502/o
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/10/o a_PTH1R/502/hn
+
+
+# late
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/10/hn a_PTH1R/504/o
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/10/o a_PTH1R/504/hn
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/12/hn a_PTH1R/502/o
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/12/o a_PTH1R/502/hn
+
+
+#T506
+#set drestraint Nof(t_DistanceColumnWithExpt)+8 a_ARRESTIN/10/hn a_PTH1R/506/o
+#set drestraint Nof(t_DistanceColumnWithExpt)+8 a_ARRESTIN/10/o a_PTH1R/506/hn
+#set drestraint Nof(t_DistanceColumnWithExpt)+8 a_ARRESTIN/12/hn a_PTH1R/504/o
+#set drestraint Nof(t_DistanceColumnWithExpt)+8 a_ARRESTIN/12/o a_PTH1R/504/hn
+
+
+# Arr beta strands
+#set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/4/hz3 a_ARRESTIN/26/od1
+set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/79/hn a_ARRESTIN/59/o
+set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/57/hn a_ARRESTIN/82/o
+set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/82/hn a_ARRESTIN/57/o
+set drestraint Nof(t_DistanceColumnWithExpt)+1 a_ARRESTIN/56/hn a_ARRESTIN/147/o
+
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/62/hn a_ARRESTIN/141/o
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/127/hn a_ARRESTIN/142/o
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/27/hn a_ARRESTIN/169/o
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/147/hn a_ARRESTIN/56/o
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/166/hn a_ARRESTIN/146/o
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/268/hn a_ARRESTIN/220/o
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/201/hn a_ARRESTIN/184/o
+set drestraint Nof(t_DistanceColumnWithExpt)+4 a_ARRESTIN/186/hn a_ARRESTIN/199/o
+
+
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/58/hn a_ARRESTIN/145/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/145/hn a_ARRESTIN/58/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/143/hn a_ARRESTIN/60/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/202/hn a_ARRESTIN/217/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/199/hn a_ARRESTIN/186/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/188/hn a_ARRESTIN/197/o
+
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/60/hn a_ARRESTIN/143/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/220/hn a_ARRESTIN/268/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/222/hn a_ARRESTIN/266/o
+set drestraint Nof(t_DistanceColumnWithExpt)+5 a_ARRESTIN/219/hn a_ARRESTIN/200/o
+
+# =========================
+# Refinement
+# =========================
+
+
+for j = 1, 1
+
+   undisplay window
+
+   fix (V_ARRESTIN | V_PTH | V_PTH1R)
+   unfix vs_min
+
+   # Stage 1 - Relax with high cn influence
+   cnWeight =4.0
+   show energy "cn"
+   write object a_OPTSUBJECT. "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_1.ob"
+   montecarlo vs_mc vs_min trajectory mute 
+   rename system "./OPTSUBJECT.trj" "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_1.trj"
+   s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+   writeProject s_out s_currentProject!=""
+
+
+   show energy "cn"   
+   write object a_OPTSUBJECT. "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_2.ob"
+   montecarlo vs_pth1rp1 vs_pth1rp1 trajectory mute
+   rename system "./OPTSUBJECT.trj" "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_2.trj"
+   s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+   writeProject s_out s_currentProject!=""
+
+
+
+
+   show energy "cn"   
+   write object a_OPTSUBJECT. "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_3.ob"
+   montecarlo vs_pth1rp3 vs_pth1rp3 trajectory mute
+   rename system "./OPTSUBJECT.trj" "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_3.trj"
+   s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+   writeProject s_out s_currentProject!=""
+
+
+
+   show energy "cn"
+   write object a_OPTSUBJECT. "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_4.ob"
+   montecarlo vs_arrestinloop vs_arrestinloop trajectory mute
+   rename system "./OPTSUBJECT.trj" "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_4.trj"
+   s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+   writeProject s_out s_currentProject!=""
+
+
+
+   show energy "cn"
+   fix (V_ARRESTIN | V_PTH | V_PTH1R)
+   unfix vs_min
+   minimize 20000
+   write object a_OPTSUBJECT. "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_5.ob"
+   s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+   writeProject s_out s_currentProject!=""
+
+
+
+   # Stage 2 - Relax with all variables again
+   cnWeight =0.5
+   show energy "cn"
+   fix (V_ARRESTIN | V_PTH | V_PTH1R)
+   unfix vs_min
+   minimize 20000
+   write object a_OPTSUBJECT. "./Trajectory/"+objectnamecu+"_"+fileepochcu+"_"+replicanamecu+"_"+j+"_6.ob"
+   s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+   writeProject s_out s_currentProject!=""
+
+
+   
+   # Display could cause clash
+   #display slide index=1
+
+
+
+endfor
+
+# Stage 3 Fast MC on all sidechain 
+selectMinGrad=1.5 
+set vrestraint a_/* 
+montecarlo fast (v_//x* & V_//S & !V_//omg & !V_//omgp) trajectory mute
+s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+writeProject s_out s_currentProject!=""
+delete vrestraint
+
+
+mcShake = 2.0
+temperature = 300.0
+vicinity = 15.0
+mnvisits = 50;mnconf = mnvisits;mncallsMC = 1000;visitsAction = "heat";highEnergyAction = "stackjump";temperature = 300;tempCycle = {310.,300.,2.,0.}
+
+
+
+

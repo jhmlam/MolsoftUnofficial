@@ -1,0 +1,85 @@
+# ===================
+# Basic ICM Scripting
+# ===================
+set randomize 11111
+show version
+call "/home/homingla/Software/icm-3.9-2b/_macro"
+call "/home/homingla/Software/icm-3.9-2b/_bioinfo"
+call "/home/homingla/Software/icm-3.9-2b/_cheminfo"
+call "/home/homingla/Software/icm-3.9-2b/_rebel"
+call "/home/homingla/Software/icm-3.9-2b/_ligedit"
+call "/home/homingla/Software/icm-3.9-2b/_docking"
+read library
+
+# ====================
+# I/O
+# ====================
+
+# Open ICB
+openFile "run.icb" 0 yes no no no " append"
+
+# Open the file
+openFile "IcmXlinkMontecarlo.icm" 0 yes no no no " append"
+openFile "IcmXlinkDisplayVariable.icm" 0 yes no no no " append"
+openFile "IcmXlinkPerformance.icm" 0 yes no no no " append"
+openFile "IcmXlinkMinimize.icm" 0 yes no no no " append"
+
+
+
+
+
+delete fileepochcu
+delete objectnamecu
+delete replicanamecu
+
+
+
+# ============================
+# Save
+# ============================
+# Save the session
+s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+writeProject s_out s_currentProject!=""
+
+
+
+# ===========================
+# Call string
+# ===========================
+
+
+call string IcmXlinkPerformance
+
+s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+writeProject s_out s_currentProject!=""
+
+
+
+
+call string IcmXlinkDisplayVariable
+
+s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+writeProject s_out s_currentProject!=""
+
+
+
+
+call string IcmXlinkMontecarlo
+
+s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+writeProject s_out s_currentProject!=""
+
+
+
+
+
+call string IcmXlinkMinimize
+
+s_out = "/home/homingla/MessLab/Project-PTH1R/ICM/WorkingDir/EPOCH_111/Replica0/run.icb"
+writeProject s_out s_currentProject!=""
+
+
+
+
+quit
+

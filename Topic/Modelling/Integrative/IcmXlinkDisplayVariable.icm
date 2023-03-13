@@ -1,0 +1,133 @@
+# =====================================
+# Define the parts of PTH1R and Arrestin
+# =====================================
+
+# There are parts I will not set them move because of the very nice H bond network in the initial structure. They are in quotation. Those will not be moved at all.
+# Move - delete tz for those
+# Unfix - unfix  variables for those
+# Note. You cannot use a different name than vs_min and vs_mc for storing variables.
+
+'
+#s_Pth1r_ECD="0:179"
+#s_Pth1r_TM1="180:211"
+#s_Pth1r_ICL1="212:218"
+#s_Pth1r_TM2="219:247"
+#s_Pth1r_ECL1="248:273"
+#s_Pth1r_TM3="274:311"
+#s_Pth1r_ICL2="312:317"
+#s_Pth1r_TM4="318:345"
+#s_Pth1r_ECL3="346:359"
+'
+
+s_Pth1r_Nterm="0:355"                # Unmove. Fix.     # ECD
+
+s_Pth1r_ECL3_inspected="356:359"     # Move. Unfix. # Hinge.
+s_Pth1r_TM5="360:389"                # Move. Fix.   # Helix.
+s_Pth1r_ICL3="390:401"               # Move. unfix. # Hinge.
+
+
+s_Pth1r_TM6a="401:417"               # Move. Fix.   # Helix.
+s_Pth1r_TM6b="418:419"               # Move. Unfix. # Hinge.
+
+s_Pth1r_TM6c7a="420:449"             # Unmove. Fix. # 
+
+
+'
+s_Pth1r_TM6c="420:424"               # No move. Tight H bond with ECL4 and TM7a
+s_Pth1r_ECL4="425:434"               # No move.
+s_Pth1r_TM7a="435:449"               # No move.
+'
+
+
+
+
+s_Pth1r_TM7b="450:450"               # Move. Fix.   # Hinge.
+s_Pth1r_TM7c="451:461"               # Move. Fix.   # Helix.
+
+
+s_Pth1r_ICL4="462:463"               # Move. Unfix. # Hinge.
+s_Pth1r_TM8="464:480"                # Move. Fix.   # Helix.
+
+s_Pth1r_P1="481:501"                 # Move. Unfix. # tail P1
+s_Pth1r_P2="502:508"                 # Move. Unfix. # tail P2
+s_Pth1r_P3="509:565"                 # Move. Unfix. # tail P3
+
+
+# TODO PTH1R 7TM tub region
+s_Pth1r_7TMBottom="214,219:220,223,302,305:306,309,393,398,401,404,405,408,416,459,463,465,467,471:472,476,491:496" 
+
+s_Arrestin_Nterm="0:6"               # Move. Unfix
+s_Arrestin_s1="7:12"                 # Move. Fix
+s_Arrestin_s2="19:21"                # Move. Unfix sidechain
+s_Arrestin_s1s2="13:18"              # Move. Unfix
+s_Arrestin_s2s3s4="19:42"            # Move. Fix.
+s_Arrestin_s4s5="43:62"              # Move. Fix.
+s_Arrestin_s5s6="63:75"              # Move. Unfix
+s_Arrestin_s6="76:88"                # Move. Fix
+s_Arrestin_s6h1="89:97"              # Move. UnFix
+s_Arrestin_h1="98:106"               # Move. Fix
+s_Arrestin_h1s7="107:111"            # Move. Unfix
+s_Arrestin_s7="112:117"              # Move. Fix
+s_Arrestin_s7s8="118:123"            # Move. UnFix
+s_Arrestin_s8="124:130"              # Move. Fix
+s_Arrestin_s8s9="131:139"            # Move. UnFix
+s_Arrestin_s9="140:150"              # Move. Fix
+s_Arrestin_s9s10="151:164"           # Move. Unfix
+s_Arrestin_s10="165:173"             # Move. Fix
+s_Arrestin_s10s11="174:182"          # Move. Unfix
+s_Arrestin_s11s12="183:203"          # Move. Fix
+s_Arrestin_s12s13="204:206"          # Move. UnFix
+s_Arrestin_s13="207:208"             # Move. Fix
+s_Arrestin_s13s14="209:213"          # Move. UnFix
+s_Arrestin_s14s15="214:242"          # Move. Fix
+s_Arrestin_s15s16="243:245"          # Move. Unfix
+s_Arrestin_s16s17="246:274"          # Move. Fix
+s_Arrestin_s17s18a="275:299"         # Move. Fix
+s_Arrestin_s17s18b="300:310"         # Move. Unfix
+s_Arrestin_s17s18c="311:315"         # Move. Unfix
+s_Arrestin_s18s19="316:351"          # Move. Fix
+s_Arrestin_Cterm="352:380"           # Move. Unfix
+
+
+
+
+NoTzDecision = (a_PTH1R/$s_Pth1r_ECL3_inspected,$s_Pth1r_TM5,$s_Pth1r_ICL3,$s_Pth1r_TM6a,$s_Pth1r_TM6b,$s_Pth1r_ICL4,$s_Pth1r_TM8,$s_Pth1r_P1,$s_Pth1r_P2,$s_Pth1r_P3) | (a_ARRESTIN)
+
+
+# Montecarlo: All reasonable variables
+vs_mc=((V_//S & V_/S_ & !V_//omg & !V_//omgp) & ((V_PTH1R/$s_Pth1r_ECL3_inspected | V_PTH1R/$s_Pth1r_ICL3 | V_PTH1R/$s_Pth1r_TM6b | V_PTH1R/$s_Pth1r_ICL4 ) | (V_ARRESTIN/$s_Arrestin_Nterm | V_ARRESTIN/$s_Arrestin_s5s6 | V_ARRESTIN/$s_Arrestin_s6h1 |  V_ARRESTIN/$s_Arrestin_h1s7 | V_ARRESTIN/$s_Arrestin_s8s9 | V_ARRESTIN/$s_Arrestin_s9s10 | V_ARRESTIN/$s_Arrestin_s17s18c )))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi* | V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_s10/xi* | V_ARRESTIN/$s_Arrestin_s9s10/xi*)) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P1 | V_PTH1R/$s_Pth1r_P2 | V_PTH1R/$s_Pth1r_P3))
+
+# Montecarlo: The tail of PTH1R
+vs_pth1rp1=((V_//S & V_/S_ & !V_//omg & !V_//omgp) & ( V_ARRESTIN/$s_Arrestin_s9s10  ))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi*| V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_s10/xi* | V_ARRESTIN/$s_Arrestin_s9s10/xi*)) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P1 | V_PTH1R/$s_Pth1r_P2))
+
+
+vs_pth1rp3=((V_//S & V_/S_ & !V_//omg & !V_//omgp) & (V_ARRESTIN/$s_Arrestin_Nterm | V_ARRESTIN/$s_Arrestin_s6h1 |  V_ARRESTIN/$s_Arrestin_h1s7 | V_ARRESTIN/$s_Arrestin_s9s10  ))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi*| V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_h1/xi* ))  | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P3 | V_PTH1R/$s_Pth1r_P2))
+
+
+
+
+# Montecarlo: loops of arrestin inside the 7TM
+vs_arrestinloop=((V_//S & V_/S_ & !V_//omg & !V_//omgp) &                                  (( V_ARRESTIN/$s_Arrestin_s5s6 | V_ARRESTIN/$s_Arrestin_s17s18c  | V_ARRESTIN/$s_Arrestin_s8s9  )))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & V_PTH1R/$s_Pth1r_7TMBottom/xi*)
+
+# Minimization: allows all the unfix above 
+
+vs_min = ((V_//S & V_/S_ & !V_//omg & !V_//omgp) & ((V_PTH1R/$s_Pth1r_ECL3_inspected | V_PTH1R/$s_Pth1r_ICL3 | V_PTH1R/$s_Pth1r_TM6b | V_PTH1R/$s_Pth1r_ICL4 ) |    (V_ARRESTIN/$s_Arrestin_Nterm | V_ARRESTIN/$s_Arrestin_s4s5 | V_ARRESTIN/$s_Arrestin_s5s6 | V_ARRESTIN/$s_Arrestin_s6h1 |  V_ARRESTIN/$s_Arrestin_h1s7 |V_ARRESTIN/$s_Arrestin_s7s8 | V_ARRESTIN/$s_Arrestin_s8s9 | V_ARRESTIN/$s_Arrestin_s9s10 | V_ARRESTIN/$s_Arrestin_s17s18b | V_ARRESTIN/$s_Arrestin_s17s18c)))| ( V_ARRESTIN//?vt*) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_7TMBottom/xi* | V_ARRESTIN/$s_Arrestin_s1s2/xi* | V_ARRESTIN/$s_Arrestin_s1/xi* | V_ARRESTIN/$s_Arrestin_s2/xi* | V_ARRESTIN/$s_Arrestin_s10/xi* | V_ARRESTIN/$s_Arrestin_s9s10/xi* | V_ARRESTIN/$s_Arrestin_h1/xi* | V_ARRESTIN/$s_Arrestin_s15s16/xi*)) | ((V_//S  & !V_//omg & !V_//omgp) & (V_PTH1R/$s_Pth1r_P1 | V_PTH1R/$s_Pth1r_P2 | V_PTH1R/$s_Pth1r_P3))
+
+
+
+undisplay V_//
+display vs_min
+Nof(vs_min)
+undisplay V_//
+display vs_mc
+Nof(vs_mc)
+
+undisplay V_//
+display vs_pth1rp1
+Nof(vs_pth1rp1)
+
+#undisplay V_//
+#display vs_arrestinloop
+#Nof(vs_arrestinloop)
+
+#a_PTH1R/$s_Pth1r_7TMBottom & !a_//ca,c,n,o,hn

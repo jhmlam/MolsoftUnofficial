@@ -1,0 +1,220 @@
+# ======================
+# open csv open ob
+# ======================
+
+# 1. CSV
+# All information except PTH1R position column can be derived from the csv
+# Row 1: OneLetterAaResid of Arrestin
+# Column 1: OneLetterAaResid of PTH1R
+# The rest are blot densitometry values
+# Open the file as rename table as Chem_xlinking_zeroed
+
+# 2. OB
+# OB is a file format for ICM object
+# Open the file object it will default to be the current object
+
+
+# =============================
+# Matrix to Pairlist Table
+# =============================
+# Check the dimension of Xlink pairs
+CrosslinkThreshold = 0.25
+cnEnergyThreshold = 18.0
+numrow = Nof(Chem_xlinking_zeroed.A)
+transdummy = Transpose(Chem_xlinking_zeroed)
+numcol = Nof(transdummy.A)
+delete transdummy
+print numrow, numcol, numrow*numcol
+numpair = numrow*numcol
+
+# Initialise array
+delete t_DistanceColumnWithExpt
+delete t_DistanceColumnWithExptWeak
+add column t_DistanceColumnWithExpt Sarray(numpair,"")  name="PTH1R position"
+add column t_DistanceColumnWithExpt Sarray(numpair,"")  name="PTH1R resid"
+add column t_DistanceColumnWithExpt Sarray(numpair,"")  name="ARRESTIN resid"
+add column t_DistanceColumnWithExpt Rarray(numpair,0.)  name="StrengthReal"
+add column t_DistanceColumnWithExpt Iarray(numpair,1)  name="StrengthType"
+add column t_DistanceColumnWithExpt Rarray(numpair,0.)  name="Dist"
+add column t_DistanceColumnWithExpt Rarray(numpair,0.)  name="Experiment"
+add column t_DistanceColumnWithExpt Rarray(numpair,0.)  name="Drestraint"
+add column t_DistanceColumnWithExpt Rarray(numpair,0.)  name="cnEnergy"
+add column t_DistanceColumnWithExpt Rarray(numpair,0.)  name="log10Experiment"
+add column t_DistanceColumnWithExpt Sarray(numpair,"")  name="TwoResidues"
+add column t_DistanceColumnWithExpt Iarray(numpair,0)  name="DistancePairIndex"
+add column t_DistanceColumnWithExpt Rarray(numpair,0.)  name="ArrHub"
+# Put Matrix Into Pairlist
+hubdummy = Rarray(numcol,0.)
+
+for j=2, numcol
+    hubcountl = 0.
+    for i=2, numrow
+      if (Toreal(Chem_xlinking_zeroed[i,j]) > 0.00000) then
+          hubcountl += 1.
+      endif
+    endfor
+    hubdummy[j] = Toreal(hubcountl)
+endfor
+
+
+# Put Matrix Into Pairlist
+
+# Note what ever the column name it is a 1-based table
+pairtablerow = 1
+for i=2, numrow
+    for j=2, numcol
+
+      if (Toreal(Chem_xlinking_zeroed[i,j]) == 0.00000) then
+          continue
+      else
+         
+         tempPTH1Rresid = Chem_xlinking_zeroed[i,1]
+         tempPTH1Rposition = String(2,0,Chem_xlinking_zeroed[i,1])
+         tempARRESTINresid = Chem_xlinking_zeroed[1,j]
+         experimentalval = Toreal(Chem_xlinking_zeroed[i,j])
+
+         # Filling out the table
+         t_DistanceColumnWithExpt.Experiment[pairtablerow] = experimentalval
+         t_DistanceColumnWithExpt.log10Experiment[pairtablerow] = Log(experimentalval)
+         t_DistanceColumnWithExpt.PTH1R_resid[pairtablerow] = tempPTH1Rresid
+         t_DistanceColumnWithExpt.PTH1R_position[pairtablerow] = tempPTH1Rposition
+         t_DistanceColumnWithExpt.ARRESTIN_resid[pairtablerow] = tempARRESTINresid
+         t_DistanceColumnWithExpt.ArrHub[pairtablerow] = hubdummy[j]
+
+         t_DistanceColumnWithExpt.DistancePairIndex[pairtablerow] = pairtablerow
+         
+
+         # Define 3 guaged strength string here
+         if t_DistanceColumnWithExpt.Experiment[pairtablerow] > 0.5 then
+           t_DistanceColumnWithExpt.StrengthType[pairtablerow] = Integer((numpair*10)+1)
+           t_DistanceColumnWithExpt.StrengthReal[pairtablerow] = 10.0
+         else
+           if t_DistanceColumnWithExpt.Experiment[pairtablerow] > CrosslinkThreshold then
+             t_DistanceColumnWithExpt.StrengthType[pairtablerow] = Integer((numpair*10)+2)
+             t_DistanceColumnWithExpt.StrengthReal[pairtablerow] = 6.0
+           else
+             t_DistanceColumnWithExpt.StrengthType[pairtablerow] = Integer((numpair*10)+3)
+             t_DistanceColumnWithExpt.StrengthReal[pairtablerow] = 1.0
+           endif           
+         endif
+         pairtablerow+=1
+      endif
+endfor
+endfor
+
+# Truncate 
+delete t_DistanceColumnWithExpt[pairtablerow:numpair]
+
+
+# ==================================
+# Visualisation of Distances
+# ==================================
+# Cleanse the distance pairs in GUI
+delete gui static volume label
+
+for i=1, Nof(t_DistanceColumnWithExpt)
+ errorAction="none"
+ # PTH1R
+ if t_DistanceColumnWithExpt.PTH1R_resid[i][1] =="G" then
+    a1= a_PTH1R/^$t_DistanceColumnWithExpt.PTH1R_resid[i]/ha1
+  else
+    a1= a_PTH1R/^$t_DistanceColumnWithExpt.PTH1R_resid[i]/cb
+ endif
+
+ # Arrestin 
+ if t_DistanceColumnWithExpt.ARRESTIN_resid[i][1] =="G" then
+    a2= a_ARRESTIN/^$t_DistanceColumnWithExpt.ARRESTIN_resid[i]/ha1
+  else
+    a2= a_ARRESTIN/^$t_DistanceColumnWithExpt.ARRESTIN_resid[i]/cb
+    if (Error) then
+       print i
+       s_skipMessages = "[2139]"
+    endif
+ endif
+
+ # Calculate distance
+ t_DistanceColumnWithExpt.TwoResidues[i] = "((a_ARRESTIN/^"+String($t_DistanceColumnWithExpt.ARRESTIN_resid[i])+"/ca)"+" | "+"(a_PTH1R/^"+String($t_DistanceColumnWithExpt.PTH1R_resid[i])+"/ca))"
+
+
+
+
+ t_DistanceColumnWithExpt.Dist[i]=  Distance(a1 a2)
+
+ # Calculate other functions of distance
+ t_DistanceColumnWithExpt.cnEnergy[i] = Power(Max((t_DistanceColumnWithExpt.Dist[i]-10.0), 0.0), 2)* Sqrt(t_DistanceColumnWithExpt.Experiment[i]) + Power(Min((t_DistanceColumnWithExpt.Dist[i]-4.0), 0.0), 2)* Sqrt(t_DistanceColumnWithExpt.Experiment[i])
+
+ t_DistanceColumnWithExpt.Drestraint[i] = Power(Max((t_DistanceColumnWithExpt.Dist[i]-10.0), 0.0), 2)* Sqrt(t_DistanceColumnWithExpt.StrengthReal[i]) + Power(Min((t_DistanceColumnWithExpt.Dist[i]-4.0), 0.0), 2)* Sqrt(t_DistanceColumnWithExpt.StrengthReal[i])
+ 
+ # SHOW
+ if ((t_DistanceColumnWithExpt.Experiment[i] > CrosslinkThreshold) & (t_DistanceColumnWithExpt.cnEnergy[i] > cnEnergyThreshold)) then
+   print String($t_DistanceColumnWithExpt.ARRESTIN_resid[i])+"/"+String(a2)
+   print String($t_DistanceColumnWithExpt.PTH1R_resid[i])+"/"+String(a1)
+   make distance a1 a2
+ endif
+
+ # Spell Error cause
+ if (Error) print "These alternative positions will kill me"
+ s_skipMessages = "[2644]"
+ if (Error) then
+    print "These alternative positions will kill me"
+    #print(t_DistanceColumnWithExpt.ARRESTIN_resid[i], t_DistanceColumnWithExpt.PTH1R_resid[i])
+    #s_skipMessages = "[2644,2185]"
+    #   # suppress the warning
+ endif
+
+endfor
+errorAction="break"
+
+
+delete t_DistanceColumnWithExpt.Dist == 0
+
+
+set format t_DistanceColumnWithExpt.Dist "%.4g" color="rainbow='#33AAFF/#FFFFFF/#FFBBBB,0.:30.,pinwheel'"
+set format t_DistanceColumnWithExpt.Experiment "%.4g" color="rainbow='#33AAFF/#FFFFFF/#FFBBBB,0.:0.5,pinwheel'"
+
+sort reverse t_DistanceColumnWithExpt.cnEnergy
+
+
+# Add cursor option
+add header t_DistanceColumnWithExpt name="cursor" """
+center %11 margin=12.; display residue label %11; as_graph= Atom( %11 )
+"""
+
+
+
+
+make plot t_DistanceColumnWithExpt "x=Dist;y=Experiment;color=ArrHub;"
+make plot t_DistanceColumnWithExpt "x=Drestraint;y=Experiment;color=ArrHub;"
+make plot t_DistanceColumnWithExpt "x=Dist;y=cnEnergy;color=ArrHub;"
+
+
+show energy "cn"
+display drestraint
+show drestraint
+
+t_DistanceColumnWithExptWeak = t_DistanceColumnWithExpt
+delete t_DistanceColumnWithExpt.Experiment < CrosslinkThreshold 
+
+
+
+
+
+
+# =====================
+# Protein Helath
+# =====================
+calcEnergyStrain Res( Mol(a_*.//DD) ) no 7.
+
+printf "     Current Nof(V_PTH/SEH) %d Nof(a_PTH/SEH) %d\n",Nof(V_PTH/SEH), Nof(a_PTH/SEH)
+printf "     Previous Nof(V_PTH/SEH) %d Nof(a_PTH/SEH) %d\n",Nof(V_TEMP_TETHER.PTH/SEH), Nof(a_TEMP_TETHER.PTH/SEH)
+printf "Percent retained Nof(V_PTH/SEH) %.5f Nof(a_PTH/SEH) %.5f\n",Real(Nof(V_PTH/SEH))/Real(Nof(V_TEMP_TETHER.PTH/SEH)), Real(Nof(a_PTH/SEH))/Real(Nof(a_TEMP_TETHER.PTH/SEH))
+
+
+printf "     Current Nof(V_PTH1R/SEH) %d Nof(a_PTH1R/SEH) %d\n",Nof(V_PTH1R/SEH), Nof(a_PTH1R/SEH)
+printf "     Previous Nof(V_PTH1R/SEH) %d Nof(a_PTH1R/SEH) %d\n",Nof(V_TEMP_TETHER.PTH1R/SEH), Nof(a_TEMP_TETHER.PTH1R/SEH)
+printf "Percent retained Nof(V_PTH1R/SEH) %.5f Nof(a_PTH1R/SEH) %.5f\n",Real(Nof(V_PTH1R/SEH))/Real(Nof(V_TEMP_TETHER.PTH1R/SEH)), Real(Nof(a_PTH1R/SEH))/Real(Nof(a_TEMP_TETHER.PTH1R/SEH))
+
+
+printf "    Current Nof(V_ARRESTIN/SEH) %d Nof(a_ARRESTIN/SEH) %d\n",Nof(V_ARRESTIN/SEH), Nof(a_ARRESTIN/SEH)
+printf "    Previous Nof(V_ARRESTIN/SEH) %d Nof(a_ARRESTIN/SEH) %d\n",Nof(V_TEMP_TETHER.ARRESTIN/SEH), Nof(a_TEMP_TETHER.ARRESTIN/SEH)
+printf "Percent retained Nof(V_ARRESTIN/SEH) %.5f Nof(a_ARRESTIN/SEH) %.5f\n",Real(Nof(V_ARRESTIN/SEH))/Real(Nof(V_TEMP_TETHER.ARRESTIN/SEH)), Real(Nof(a_ARRESTIN/SEH))/Real(Nof(a_TEMP_TETHER.ARRESTIN/SEH))
